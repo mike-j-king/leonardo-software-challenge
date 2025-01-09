@@ -1,6 +1,6 @@
 'use client'
 import { SimpleGrid, Box, Text, Flex } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Character } from 'utils/types/character'
 import { useDebounce } from 'utils/hooks/useDebounce'
 import { useCharacters } from 'utils/hooks/useCharacters'
@@ -26,16 +26,21 @@ export function CharacterGrid() {
   )
   const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page)
-  }
-
-  useEffect(() => {
     router.push(
-      `/information?page=${currentPage}` +
-        (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
+      `/information?page=${page}` +
+      (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
     )
-  }, [currentPage, debouncedSearchName, router])
+  }, [router, debouncedSearchName])
+
+  // Effect for search name changes - reset search to page 1
+  useEffect(() => {
+    if (debouncedSearchName !== searchParams.get('name')) {
+      setCurrentPage(1)
+      router.push(`/information?page=1&name=${debouncedSearchName}`)
+    }
+  }, [debouncedSearchName, router, searchParams])
 
   const { loading, error, data, refetch, totalPages } = useCharacters(
     currentPage,
