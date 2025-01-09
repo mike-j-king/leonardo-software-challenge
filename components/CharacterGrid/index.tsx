@@ -1,18 +1,16 @@
 'use client'
+import { CharacterGridCard } from './CharacterGridCard'
+import { CharacterGridFooter } from './CharacterGridFooter'
+import { CharacterGridHeader } from './CharacterGridHeader'
+import { CharacterModal } from './CharacterModal'
 import { SimpleGrid, Box, Text, Flex } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
-import { Character } from 'utils/types/character'
+import { Character } from '@/types/Character'
 import { useDebounce } from 'utils/hooks/useDebounce'
 import { useCharacters } from 'utils/hooks/useCharacters'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { LoadingErrorAlert } from 'components/shared/LoadingErrorAlert'
 import { LoadingSkeletonGrid } from 'components/shared/LoadingSkeletonGrid'
-import {
-  CharacterGridHeader,
-  CharacterGridCard,
-  CharacterGridFooter,
-  CharacterModal,
-} from 'components/character-grid'
 
 export function CharacterGrid() {
   const router = useRouter()
@@ -26,13 +24,16 @@ export function CharacterGrid() {
   )
   const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
 
-  const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page)
-    router.push(
-      `/information?page=${page}` +
-      (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
-    )
-  }, [router, debouncedSearchName])
+  const handlePageChange = useCallback(
+    (page: number) => {
+      setCurrentPage(page)
+      router.push(
+        `/information?page=${page}` +
+          (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
+      )
+    },
+    [router, debouncedSearchName]
+  )
 
   // Effect for search name changes - reset search to page 1
   useEffect(() => {

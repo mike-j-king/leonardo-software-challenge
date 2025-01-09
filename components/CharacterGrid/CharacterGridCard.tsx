@@ -1,4 +1,4 @@
-import { Character } from 'utils/types/character'
+import { Character } from '@/types/Character'
 import { Box, VStack, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'

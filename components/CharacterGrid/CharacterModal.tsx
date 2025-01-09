@@ -11,7 +11,7 @@ import {
   Box,
   Center,
 } from '@chakra-ui/react'
-import { Character } from 'utils/types/character'
+import { Character } from '@/types/Character'
 import Image from 'next/image'
 
 interface CharacterModalProps {
