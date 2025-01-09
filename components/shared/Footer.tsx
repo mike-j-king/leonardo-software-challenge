@@ -1,12 +1,21 @@
 'use client'
-import { Box, Container, Text } from '@chakra-ui/react'
+import { Box, Container, Text, Link } from '@chakra-ui/react'
 
 export function Footer() {
   return (
     <Box as="footer" w="full" bg="gray.100" py={4}>
       <Container maxW="container.xl">
         <Text textAlign="center" color="gray.600">
-          Data provided by Rick and Morty API
+          Data provided by{' '}
+          <Link
+            href="https://rickandmortyapi.com"
+            color="brand.green"
+            textDecoration="underline"
+            fontWeight="bold"
+            _hover={{ color: 'brand.yellow' }}
+          >
+            Rick and Morty API
+          </Link>
         </Text>
       </Container>
     </Box>

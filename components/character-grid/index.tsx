@@ -81,7 +81,7 @@ export function CharacterGrid() {
         />
       </Flex>
       {/* Character grid */}
-      <Box minHeight="400px" px={4} py={2}>
+      <Box minHeight="400px" px={4} py={4}>
         {loading ? (
           <LoadingSkeletonGrid />
         ) : error ? (
@@ -96,7 +96,6 @@ export function CharacterGrid() {
           <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
             spacing={4}
-            p={4}
           >
             {data?.characters.results.map((character, index) => (
               <CharacterGridCard

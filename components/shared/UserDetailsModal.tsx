@@ -13,6 +13,7 @@ import {
   ModalFooter,
   FormControl,
   FormLabel,
+  Text
 } from '@chakra-ui/react'
 
 interface UserData {
@@ -59,7 +60,14 @@ export function UserDetailsModal() {
     >
       <ModalOverlay backdropFilter="blur(10px)" />
       <ModalContent mx={4} my="auto" borderRadius="xl" boxShadow="xl">
-        <ModalHeader>Welcome! Please introduce yourself</ModalHeader>
+        <ModalHeader>
+          <Text fontSize="2xl" fontWeight="bold" color="brand.brown">
+            Welcome to Rick & Morty&apos;s Multiverse!
+          </Text>
+          <Text fontSize="md" color="gray.600" mt={2}>
+            Enter your details to start exploring characters across dimensions
+          </Text>
+        </ModalHeader>
         <form ref={formRef} onSubmit={handleSubmit}>
           <ModalBody>
             <VStack spacing={4}>
