@@ -1,7 +1,8 @@
 'use client'
 import { Box, Container, Text, Link } from '@chakra-ui/react'
+import { memo } from 'react'
 
-export function Footer() {
+export const Footer = memo(function Footer() {
   return (
     <Box as="footer" w="full" bg="gray.100" py={4}>
       <Container maxW="container.xl">
@@ -20,4 +21,4 @@ export function Footer() {
       </Container>
     </Box>
   )
-}
+})
