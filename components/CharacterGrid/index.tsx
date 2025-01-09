@@ -15,14 +15,16 @@ import { LoadingSkeletonGrid } from '@/components/shared/LoadingSkeletonGrid'
 export function CharacterGrid() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [searchName, setSearchName] = useState(searchParams.get('name') || '')
+  const currentSearchName = searchParams.get('name')
+  const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
+
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1
   )
-  const [searchName, setSearchName] = useState(searchParams.get('name') || '')
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   )
-  const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
 
   const handlePageChange = useCallback(
     (page: number) => {
@@ -37,11 +39,16 @@ export function CharacterGrid() {
 
   // Effect for search name changes - reset search to page 1
   useEffect(() => {
-    if (debouncedSearchName !== searchParams.get('name')) {
-      setCurrentPage(1)
-      router.push(`/information?page=1&name=${debouncedSearchName}`)
+    if (debouncedSearchName == currentSearchName) {
+      return
     }
-  }, [debouncedSearchName, router, searchParams])
+    setCurrentPage(1)
+    router.push(
+      `/information?page=1` +
+        (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
+    )
+    
+  }, [currentSearchName, debouncedSearchName, router])
 
   const { loading, error, data, refetch, totalPages } = useCharacters(
     currentPage,
