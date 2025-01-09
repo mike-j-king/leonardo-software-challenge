@@ -1,6 +1,6 @@
 'use server'
 import { cookies } from 'next/headers'
-import { UserDetails } from '@/types/UserDetails'
+import { UserDetails } from '@/types/UserDetails.types'
 export async function serverUpdateUserDetails(data: UserDetails) {
   if (!data.username || !data.jobTitle) {
     throw new Error('Username and job title are required')
