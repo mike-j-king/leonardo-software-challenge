@@ -36,7 +36,7 @@ export function useCharacters(currentPage: number, searchName: string) {
     GET_CHARACTERS,
     {
       variables: { page: currentPage, name: searchName },
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: 'cache-first',
     }
   )
 
