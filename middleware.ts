@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { serverGetUserDetails } from '@/app/actions/user-details'
+import { serverGetUserDetails } from '@/app/actions/UserDetails'
 
 export async function middleware(request: NextRequest) {
   const userDetails = await serverGetUserDetails()

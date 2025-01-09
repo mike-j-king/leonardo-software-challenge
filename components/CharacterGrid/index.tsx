@@ -6,11 +6,11 @@ import { CharacterModal } from './CharacterModal'
 import { SimpleGrid, Box, Text, Flex } from '@chakra-ui/react'
 import { useCallback, useEffect, useState } from 'react'
 import { Character } from '@/types/Character'
-import { useDebounce } from 'utils/hooks/useDebounce'
-import { useCharacters } from 'utils/hooks/useCharacters'
+import { useDebounce } from '@/utils/hooks/useDebounce'
+import { useCharacters } from '@/utils/hooks/useCharacters'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { LoadingErrorAlert } from 'components/shared/LoadingErrorAlert'
-import { LoadingSkeletonGrid } from 'components/shared/LoadingSkeletonGrid'
+import { LoadingErrorAlert } from '@/components/shared/LoadingErrorAlert'
+import { LoadingSkeletonGrid } from '@/components/shared/LoadingSkeletonGrid'
 
 export function CharacterGrid() {
   const router = useRouter()

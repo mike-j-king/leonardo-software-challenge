@@ -10,12 +10,12 @@ import {
   HStack,
   Container,
 } from '@chakra-ui/react'
-import { useUserDetails } from '@/utils/providers/UserDetailsProvider'
 import { useLogout } from 'utils/hooks/useLogout'
 import Link from 'next/link'
 import { memo, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { UserDetailsModal } from './UserDetailsModal'
+import { useUserDetails } from '@/utils/providers/UserDetailsProvider'
+import { UserDetailsModal } from '@/components/shared/UserDetailsModal'
 
 export const Header = memo(function Header() {
   const { userDetails } = useUserDetails()

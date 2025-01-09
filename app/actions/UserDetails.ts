@@ -8,7 +8,6 @@ export async function serverUpdateUserDetails(data: UserDetails) {
 
   const userDetails = {
     ...data,
-    timestamp: new Date().toISOString(),
   }
 
   const cookieStore = await cookies()

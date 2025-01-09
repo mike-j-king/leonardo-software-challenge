@@ -1,5 +1,5 @@
 import { Center } from '@chakra-ui/react'
-import { PaginationControls } from 'components/shared/PaginationControls'
+import { PaginationControls } from '@/components/shared/PaginationControls'
 
 interface CharacterGridFooterProps {
   currentPage: number

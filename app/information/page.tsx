@@ -1,7 +1,7 @@
 'use client'
-import { CharacterGrid } from '@/components/character-grid/CharacterGrid'
 import { AppShell } from '@/components/shared/AppShell'
 import { Suspense } from 'react'
+import { CharacterGrid } from '@/components/CharacterGrid'
 
 export default function InformationPage() {
   return (

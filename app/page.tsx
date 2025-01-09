@@ -1,7 +1,7 @@
 'use client'
 import { Container, Button, VStack, Text, Heading } from '@chakra-ui/react'
-import { AppShell } from 'components/shared/AppShell'
 import Link from 'next/link'
+import { AppShell } from '@/components/shared/AppShell'
 
 export default function Home() {
   return (
