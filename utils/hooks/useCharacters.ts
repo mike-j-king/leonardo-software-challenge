@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
-import { CharacterResponse } from '@/types/Character'
+import { CharacterResponse } from '@/types/Character.types'
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int, $name: String) {

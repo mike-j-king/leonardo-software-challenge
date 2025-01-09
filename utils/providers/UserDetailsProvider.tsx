@@ -5,7 +5,7 @@ import {
   serverUpdateUserDetails,
   serverClearUserDetails,
 } from '@/app/actions/UserDetails'
-import { UserDetails } from '@/types/UserDetails'
+import { UserDetails } from '@/types/UserDetails.types'
 
 type UserDetailsContextType = {
   userDetails: UserDetails | null
