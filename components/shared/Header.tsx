@@ -4,6 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useAuth } from 'utils/context/auth-context'
 import { useEffect, useState } from 'react'
+import { 
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+} from '@chakra-ui/react'
 
 interface UserData {
   username: string
@@ -36,21 +41,26 @@ export function Header() {
     <Box as="header" w="full" bg="brand.peach" py={4}>
       <Container maxW="container.xl">
         <Flex justify="space-between" align="center">
-          <HStack spacing={8}>
-            {navLinks.map((link) => (
-              <Box
-                key={link.href}
-                as={Link}
-                href={link.href}
-                color="white"
-                fontWeight="semibold"
-                textDecoration={pathname === link.href ? 'underline' : 'none'}
-                _hover={{ textDecoration: 'underline' }}
-              >
-                {link.label}
-              </Box>
-            ))}
-          </HStack>
+<Breadcrumb 
+  spacing="8px" 
+  separator='>'
+  color='white'
+>
+  {navLinks.map((link) => (
+    <BreadcrumbItem key={link.href}>
+      <BreadcrumbLink
+        as={Link}
+        href={link.href}
+        color="white"
+        fontWeight="semibold"
+        textDecoration={pathname === link.href ? 'underline' : 'none'}
+        _hover={{ textDecoration: 'underline' }}
+      >
+        {link.label}
+      </BreadcrumbLink>
+    </BreadcrumbItem>
+  ))}
+</Breadcrumb>
           <HStack spacing={4}>
             {userData && (
               <Box textAlign="right">
@@ -63,7 +73,7 @@ export function Header() {
               </Box>
             )}
             <Button colorScheme="whiteAlpha" onClick={handleEditDetails}>
-              Edit Details
+              Edit
             </Button>
           </HStack>
         </Flex>

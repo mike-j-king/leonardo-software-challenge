@@ -1,4 +1,5 @@
 import { HStack, Button, Text } from '@chakra-ui/react'
+import { useBreakpointValue } from '@chakra-ui/react'
 
 interface PaginationControlsProps {
   currentPage: number
@@ -11,13 +12,17 @@ export function PaginationControls({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) {
-  const siblingCount = 1
-  const totalPageNumbers = siblingCount * 2 + 5
+  const siblingCount = useBreakpointValue({ base: 0, md: 1 }) || 0
+  const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' })
+  const spacing = useBreakpointValue({ base: 1, md: 2 })
+  const shouldDisplay = useBreakpointValue({ base: false, md: true })
 
   const range = (start: number, end: number): number[] => {
     const length = end - start + 1
     return Array.from({ length }, (_, idx) => idx + start)
   }
+
+  const totalPageNumbers = siblingCount * 2 + 5
 
   let pages: (number | string)[] = []
 
@@ -54,9 +59,9 @@ export function PaginationControls({
   }
 
   return (
-    <HStack spacing={2}>
+    <HStack spacing={spacing}>
       <Button
-        size="sm"
+        size={buttonSize}
         onClick={() => handlePageChange(currentPage - 1)}
         isDisabled={currentPage === 1}
       >
@@ -67,22 +72,30 @@ export function PaginationControls({
         typeof page === 'number' ? (
           <Button
             key={page}
-            size="sm"
+            size={buttonSize}
             colorScheme={currentPage === page ? 'blue' : 'gray'}
             variant={currentPage === page ? 'solid' : 'ghost'}
             onClick={() => handlePageChange(page)}
+            display={
+              shouldDisplay ||
+              page === 1 ||
+              page === totalPages ||
+              page === currentPage
+                ? 'flex'
+                : 'none'
+            }
           >
             {page}
           </Button>
         ) : (
-          <Text key={`ellipsis-${index}`} mx={2}>
+          <Text key={`ellipsis-${index}`} mx={spacing}>
             {page}
           </Text>
         )
       )}
 
       <Button
-        size="sm"
+        size={buttonSize}
         onClick={() => handlePageChange(currentPage + 1)}
         isDisabled={currentPage === totalPages}
       >

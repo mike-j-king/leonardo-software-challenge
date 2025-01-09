@@ -13,7 +13,7 @@ import {
   ModalFooter,
   FormControl,
   FormLabel,
-  Text
+  Text,
 } from '@chakra-ui/react'
 
 interface UserData {
