@@ -4,7 +4,6 @@ import { serverGetUserDetails } from '@/app/actions/user-details'
 
 export async function middleware(request: NextRequest) {
   const userDetails = await serverGetUserDetails()
-  console.log(userDetails)
 
   if (!userDetails && !request.nextUrl.pathname.startsWith('/login')) {
     const loginUrl = new URL('/login', request.url)

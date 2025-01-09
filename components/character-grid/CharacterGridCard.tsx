@@ -33,7 +33,6 @@ export function CharacterGridCard({
       maxWidth={300}
       onClick={() => setSelectedCharacter(character)}
       onKeyDown={(e: React.KeyboardEvent) => {
-        console.log(e.key)
         if (e.key === 'Enter') {
           // Prevent modal from closing in hitting enter
           e.preventDefault()
