@@ -1,6 +1,5 @@
 'use client'
-import React, { useRef, useState } from 'react'
-import { useAuth } from 'utils/context/auth-context'
+import React, { useState } from 'react'
 import {
   Button,
   Input,
@@ -15,45 +14,40 @@ import {
   FormLabel,
   Text,
 } from '@chakra-ui/react'
+import { useUserDetails } from '@/utils/providers/UserDetailsProvider'
 
-interface UserData {
+interface UserDetailsModalProps {
+  open: boolean
   username: string
   jobTitle: string
+  onClose: () => void
 }
 
-export function UserDetailsModal() {
-  const { isAuthenticated, setIsAuthenticated } = useAuth()
-  const formRef = useRef<HTMLFormElement>(null)
+export function UserDetailsModal({
+  open,
+  username,
+  jobTitle,
+  onClose,
+}: UserDetailsModalProps) {
+  const { updateUserDetails } = useUserDetails()
 
-  const [userData, setUserData] = useState<UserData>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('userData')
-      return stored
-        ? JSON.parse(stored)
-        : {
-            username: '',
-            jobTitle: '',
-          }
-    }
-    return {
-      username: '',
-      jobTitle: '',
-    }
+  const [userData, setUserData] = useState({
+    username: username,
+    jobTitle: jobTitle,
   })
 
-  // Submit form and save to localStorage
   const handleSubmit = (
     e: React.FormEvent<HTMLFormElement | HTMLButtonElement>
   ) => {
     e.preventDefault()
-    localStorage.setItem('userData', JSON.stringify(userData))
-    setIsAuthenticated(true)
+    updateUserDetails(userData)
+    onClose()
   }
 
   return (
     <Modal
-      isOpen={!isAuthenticated}
-      onClose={() => {}}
+      isOpen={open}
+      onClose={onClose}
       closeOnOverlayClick={false}
       isCentered
       size={{ base: 'sm', md: 'md' }}
@@ -61,14 +55,11 @@ export function UserDetailsModal() {
       <ModalOverlay backdropFilter="blur(10px)" />
       <ModalContent mx={4} my="auto" borderRadius="xl" boxShadow="xl">
         <ModalHeader>
-          <Text fontSize="2xl" fontWeight="bold" color="brand.brown">
-            Welcome to Rick & Morty&apos;s Multiverse!
-          </Text>
           <Text fontSize="md" color="gray.600" mt={2}>
-            Enter your details to start exploring characters across dimensions
+            Edit your details
           </Text>
         </ModalHeader>
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
           <ModalBody>
             <VStack spacing={4}>
               <FormControl isRequired>
@@ -97,7 +88,6 @@ export function UserDetailsModal() {
             <Button
               type="submit"
               colorScheme="blue"
-              onClick={handleSubmit}
               isDisabled={!userData.username || !userData.jobTitle}
               width="full"
             >
