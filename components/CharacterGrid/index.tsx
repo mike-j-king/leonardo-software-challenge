@@ -18,6 +18,7 @@ export function CharacterGrid() {
   const [searchName, setSearchName] = useState(searchParams.get('name') || '')
   const currentSearchName = searchParams.get('name')
   const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
+  const [imagesPreloaded, setImagesPreloaded] = useState(false)
 
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get('page')) || 1
@@ -57,6 +58,25 @@ export function CharacterGrid() {
 
   const noData = !loading && !error && data?.characters?.results.length === 0
 
+  // Preload images to avoid them loading during the first render
+  useEffect(() => {
+    if (data?.characters?.results) {
+      let loadedImages = 0
+      const totalImages = data.characters.results.length
+      
+      data.characters.results.forEach(character => {
+        const img = new Image()
+        img.onload = () => {
+          loadedImages++
+          if (loadedImages === totalImages) {
+            setImagesPreloaded(true)
+          }
+        }
+        img.src = character.image
+      })
+    }
+  }, [data])
+
   return (
     <Box w="100%" maxW="container.xl">
       {/* GridHeader - Includes Search and Pagination Controls*/}
@@ -69,7 +89,7 @@ export function CharacterGrid() {
       />
       {/* Character grid */}
       <Box minHeight="400px" px={4} py={4}>
-        {loading ? (
+        {loading || !imagesPreloaded ? (
           <LoadingSkeletonGrid />
         ) : error ? (
           <LoadingErrorAlert errorMessage={error.message} refetch={refetch} />
