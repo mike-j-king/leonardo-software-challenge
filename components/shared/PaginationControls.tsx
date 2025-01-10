@@ -7,96 +7,107 @@ interface PaginationControlsProps {
   onPageChange: (page: number, totalPages: number) => void
 }
 
+// Helper functions
+const range = (start: number, end: number): number[] =>
+  Array.from({ length: end - start + 1 }, (_, idx) => idx + start)
+
+// Function to determine what pagenumbers + ellipses to display in the pagination  controls returns an array of numbers and '...' strings e.g. [1,2,3,4,'...',10]
+const generatePaginationRange = (
+  currentPage: number,
+  totalPages: number,
+  siblingCount: number
+): (number | string)[] => {
+  const totalPageNumbers = siblingCount * 2 + 5
+
+  if (totalPages <= totalPageNumbers) {
+    return range(1, totalPages)
+  }
+
+  const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
+  const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages)
+  const shouldShowLeftDots = leftSiblingIndex > 2
+  const shouldShowRightDots = rightSiblingIndex < totalPages - 1
+
+  if (!shouldShowLeftDots && shouldShowRightDots) {
+    const leftRange = range(1, 3 + 2 * siblingCount)
+    return [...leftRange, '...', totalPages]
+  }
+
+  if (shouldShowLeftDots && !shouldShowRightDots) {
+    const rightRange = range(
+      totalPages - (3 + 2 * siblingCount) + 1,
+      totalPages
+    )
+    return [1, '...', ...rightRange]
+  }
+
+  const middleRange = range(leftSiblingIndex, rightSiblingIndex)
+  return [1, '...', ...middleRange, '...', totalPages]
+}
+
 export function PaginationControls({
   currentPage,
   totalPages,
   onPageChange,
 }: PaginationControlsProps) {
+
   const siblingCount = useBreakpointValue({ base: 0, md: 1 }) || 0
   const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' })
   const spacing = useBreakpointValue({ base: 1, md: 2 })
   const shouldDisplay = useBreakpointValue({ base: false, md: true })
 
-  const range = (start: number, end: number): number[] => {
-    const length = end - start + 1
-    return Array.from({ length }, (_, idx) => idx + start)
-  }
+  const renderPageButton = (page: number) => (
+    <Button
+      key={page}
+      size={buttonSize}
+      colorScheme={currentPage === page ? 'blue' : 'gray'}
+      variant={currentPage === page ? 'solid' : 'ghost'}
+      onClick={() => onPageChange(page, totalPages)}
+      display={
+        shouldDisplay ||
+        page === 1 ||
+        page === totalPages ||
+        page === currentPage
+          ? 'flex'
+          : 'none'
+      }
+    >
+      {page}
+    </Button>
+  )
 
-  const totalPageNumbers = siblingCount * 2 + 5
+  const renderEllipsis = (index: number) => (
+    <Text key={`ellipsis-${index}`} mx={spacing}>
+      ...
+    </Text>
+  )
 
-  let pages: (number | string)[] = []
-
-  if (totalPages <= totalPageNumbers) {
-    pages = range(1, totalPages)
-  } else {
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages)
-
-    const shouldShowLeftDots = leftSiblingIndex > 2
-    const shouldShowRightDots = rightSiblingIndex < totalPages - 1
-
-    const firstPage = 1
-    const lastPage = totalPages
-
-    if (!shouldShowLeftDots && shouldShowRightDots) {
-      const leftItemCount = 3 + 2 * siblingCount
-      const leftRange = range(1, leftItemCount)
-
-      pages = [...leftRange, '...', lastPage]
-    } else if (shouldShowLeftDots && !shouldShowRightDots) {
-      const rightItemCount = 3 + 2 * siblingCount
-      const rightRange = range(totalPages - rightItemCount + 1, totalPages)
-
-      pages = [firstPage, '...', ...rightRange]
-    } else if (shouldShowLeftDots && shouldShowRightDots) {
-      const middleRange = range(leftSiblingIndex, rightSiblingIndex)
-      pages = [firstPage, '...', ...middleRange, '...', lastPage]
-    }
-  }
-
-  const handlePageChange = (page: number) => {
-    onPageChange(page, totalPages)
-  }
+  // Pages will be an array of numbers and '...' strings e.g. [1,2,3,4,'...',10]
+  const pages = generatePaginationRange(
+    currentPage,
+    totalPages,
+    siblingCount
+  )
 
   return (
     <HStack spacing={spacing}>
       <Button
         size={buttonSize}
-        onClick={() => handlePageChange(currentPage - 1)}
+        onClick={() => onPageChange(currentPage - 1, totalPages)}
         isDisabled={currentPage === 1}
       >
         {'<'}
       </Button>
 
       {pages.map((page, index) =>
-        typeof page === 'number' ? (
-          <Button
-            key={page}
-            size={buttonSize}
-            colorScheme={currentPage === page ? 'blue' : 'gray'}
-            variant={currentPage === page ? 'solid' : 'ghost'}
-            onClick={() => handlePageChange(page)}
-            display={
-              shouldDisplay ||
-              page === 1 ||
-              page === totalPages ||
-              page === currentPage
-                ? 'flex'
-                : 'none'
-            }
-          >
-            {page}
-          </Button>
-        ) : (
-          <Text key={`ellipsis-${index}`} mx={spacing}>
-            {page}
-          </Text>
-        )
+        typeof page === 'number'
+          ? renderPageButton(page)
+          : renderEllipsis(index)
       )}
 
       <Button
         size={buttonSize}
-        onClick={() => handlePageChange(currentPage + 1)}
+        onClick={() => onPageChange(currentPage + 1, totalPages)}
         isDisabled={currentPage === totalPages}
       >
         {'>'}
