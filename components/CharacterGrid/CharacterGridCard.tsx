@@ -14,33 +14,22 @@ export function CharacterGridCard({
   cardIndex,
   setSelectedCharacter,
 }: CharacterGridCardProps) {
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      // Prevent modal from closing in hitting enter
+      e.preventDefault()
+      setSelectedCharacter(character)
+    }
+  }
   return (
     <MotionBox
-      key={character.id}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: cardIndex * 0.05 }}
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.2 },
-      }}
-      borderRadius="lg"
-      overflow="hidden"
-      boxShadow="md"
-      bg="white"
-      cursor="pointer"
-      tabIndex={0}
-      maxWidth={300}
-      onClick={() => setSelectedCharacter(character)}
-      onKeyDown={(e: React.KeyboardEvent) => {
-        if (e.key === 'Enter') {
-          // Prevent modal from closing in hitting enter
-          e.preventDefault()
-          setSelectedCharacter(character)
-        }
-      }}
-      role="button"
       aria-label={`View details for ${character.name}`}
+      onClick={() => setSelectedCharacter(character)}
+      onKeyDown={handleKeyDown}
+      key={character.id}
+      {...createCardAnimation(cardIndex)}
+      {...cardStyles}
     >
       <Image
         src={character.image}
@@ -56,4 +45,27 @@ export function CharacterGridCard({
       </VStack>
     </MotionBox>
   )
+}
+
+
+
+export const createCardAnimation = (cardIndex: number) => ({
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.2, delay: cardIndex * 0.05 },
+  whileHover: {
+    scale: 1.02,
+    transition: { duration: 0.2 },
+  },
+})
+
+export const cardStyles = {
+  bg: 'white',
+  borderRadius: 'lg',
+  boxShadow: 'md',
+  cursor: 'pointer',
+  maxWidth: 300,
+  overflow: 'hidden',
+  role: 'button',
+  tabIndex: 0,
 }
