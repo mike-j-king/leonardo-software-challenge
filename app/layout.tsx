@@ -1,4 +1,3 @@
-'use client'
 import { ChakraProvider } from '@chakra-ui/react'
 import { UserDetailsProvider } from 'utils/providers/UserDetailsProvider'
 
