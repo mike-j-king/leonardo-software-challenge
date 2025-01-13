@@ -1,4 +1,3 @@
-'use client'
 import { AppShell } from '@/components/shared/AppShell'
 import { Suspense } from 'react'
 import { CharacterGrid } from '@/components/CharacterGrid'

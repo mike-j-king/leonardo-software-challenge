@@ -1,4 +1,3 @@
-'use client'
 import { Container, Button, VStack, Text, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 import { AppShell } from '@/components/shared/AppShell'
