@@ -2,7 +2,11 @@
 import { Container, Button, VStack, Text, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
 import { AppShell } from '@/components/shared/AppShell'
+import { Metadata } from 'next'
 
+export const metadata: Metadata = {
+  title: 'Rick & Morty Character Explorer'
+}
 export default function Home() {
   return (
     <AppShell>
