@@ -20,16 +20,14 @@ export function CharacterGrid() {
   const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
   const [imagesPreloaded, setImagesPreloaded] = useState(false)
 
-  const [currentPage, setCurrentPage] = useState(
-    Number(searchParams.get('page')) || 1
-  )
+  const currentPage = Number(searchParams.get('page')) || 1
+
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   )
 
   const handlePageChange = useCallback(
     (page: number) => {
-      setCurrentPage(page)
       router.push(
         `/information?page=${page}` +
           (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
@@ -43,7 +41,6 @@ export function CharacterGrid() {
     if (debouncedSearchName == currentSearchName) {
       return
     }
-    setCurrentPage(1)
     router.push(
       `/information?page=1` +
         (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
