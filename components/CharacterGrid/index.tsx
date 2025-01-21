@@ -45,7 +45,6 @@ export function CharacterGrid() {
       `/information?page=1` +
         (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
     )
-    
   }, [currentSearchName, debouncedSearchName, router])
 
   const { loading, error, data, refetch, totalPages } = useCharacters(
@@ -60,8 +59,8 @@ export function CharacterGrid() {
     if (data?.characters?.results) {
       let loadedImages = 0
       const totalImages = data.characters.results.length
-      
-      data.characters.results.forEach(character => {
+
+      data.characters.results.forEach((character) => {
         const img = new Image()
         img.onload = () => {
           loadedImages++

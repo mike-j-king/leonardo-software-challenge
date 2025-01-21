@@ -4,10 +4,10 @@ import { Footer } from '@/components/shared/Footer'
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-        <VStack minH="100vh">
-          <Header />
-          {children}
-          <Footer />
-        </VStack>
+    <VStack minH="100vh">
+      <Header />
+      {children}
+      <Footer />
+    </VStack>
   )
 }
