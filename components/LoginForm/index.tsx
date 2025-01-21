@@ -23,10 +23,10 @@ interface FormState {
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <Button 
-      type="submit" 
-      colorScheme="green" 
-      width="100%" 
+    <Button
+      type="submit"
+      colorScheme="green"
+      width="100%"
       size="lg"
       isLoading={pending}
     >
@@ -43,17 +43,18 @@ export function LoginForm() {
   async function formAction(_prevState: FormState | null, formData: FormData) {
     const username = formData.get('username') as string
     const jobTitle = formData.get('jobTitle') as string
-    
+
     if (!username?.trim() || !jobTitle?.trim()) {
       return { success: false, message: 'All fields are required' }
     }
-  
+
     try {
       await updateUserDetails({ username, jobTitle })
       router.push(searchParams.get('from') || '/')
       return { success: true, message: 'Login successful' }
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : 'Login failed. Please try again.'
+      const errorMessage =
+        e instanceof Error ? e.message : 'Login failed. Please try again.'
       return { success: false, message: errorMessage }
     }
   }
@@ -77,19 +78,11 @@ export function LoginForm() {
             </Text>
             <FormControl>
               <FormLabel>Username</FormLabel>
-              <Input
-                type="text"
-                name="username"
-                required
-              />
+              <Input type="text" name="username" required />
             </FormControl>
             <FormControl>
               <FormLabel>Job title</FormLabel>
-              <Input
-                type="text"
-                name="jobTitle"
-                required
-              />
+              <Input type="text" name="jobTitle" required />
             </FormControl>
             <SubmitButton />
           </VStack>

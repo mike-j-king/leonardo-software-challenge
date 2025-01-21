@@ -22,7 +22,6 @@ interface FormState {
   success: boolean
 }
 
-
 interface UserDetailsModalProps {
   isOpen: boolean
   username: string
@@ -32,19 +31,13 @@ interface UserDetailsModalProps {
 
 function SubmitButton() {
   const { pending } = useFormStatus()
-  
+
   return (
-    <Button
-      type="submit"
-      colorScheme="blue"
-      width="full"
-      isLoading={pending}
-    >
+    <Button type="submit" colorScheme="blue" width="full" isLoading={pending}>
       Continue
     </Button>
   )
 }
-
 
 export function UserDetailsModal({
   isOpen,
@@ -57,22 +50,22 @@ export function UserDetailsModal({
   async function formAction(_prevState: FormState | null, formData: FormData) {
     const username = formData.get('username') as string
     const jobTitle = formData.get('jobTitle') as string
-    
+
     if (!username?.trim() || !jobTitle?.trim()) {
       return { success: false, message: 'All fields are required' }
     }
-  
+
     try {
       await updateUserDetails({ username, jobTitle })
       return { success: true, message: 'Login successful' }
     } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : 'Login failed. Please try again.'
+      const errorMessage =
+        e instanceof Error ? e.message : 'Login failed. Please try again.'
       return { success: false, message: errorMessage }
     }
   }
 
   const [formState, dispatchForm] = useFormState(formAction, null)
-
 
   return (
     <Modal

@@ -60,7 +60,7 @@ export function CharacterGrid() {
       let loadedImages = 0
       const totalImages = data.characters.results.length
       let mounted = true
-  
+
       data.characters.results.forEach((character) => {
         const img = new Image()
         img.onload = () => {
@@ -73,7 +73,7 @@ export function CharacterGrid() {
         }
         img.src = character.image
       })
-  
+
       // Cleanup function that runs when component unmounts or data changes
       return () => {
         mounted = false

@@ -63,10 +63,7 @@ export const Header = memo(function Header() {
                 {userDetails?.jobTitle}
               </Text>
             </Box>
-            <Button
-              colorScheme="whiteAlpha"
-              onClick={onOpen}
-              >
+            <Button colorScheme="whiteAlpha" onClick={onOpen}>
               Edit
             </Button>
             <Button colorScheme="whiteAlpha" onClick={logout}>
