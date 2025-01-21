@@ -24,7 +24,7 @@ interface FormState {
 
 
 interface UserDetailsModalProps {
-  open: boolean
+  isOpen: boolean
   username: string
   jobTitle: string
   onClose: () => void
@@ -47,7 +47,7 @@ function SubmitButton() {
 
 
 export function UserDetailsModal({
-  open,
+  isOpen,
   username,
   jobTitle,
   onClose,
@@ -76,7 +76,7 @@ export function UserDetailsModal({
 
   return (
     <Modal
-      isOpen={open}
+      isOpen={isOpen}
       onClose={onClose}
       closeOnOverlayClick={false}
       isCentered

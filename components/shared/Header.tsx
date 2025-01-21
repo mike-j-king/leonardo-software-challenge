@@ -12,7 +12,8 @@ import {
 } from '@chakra-ui/react'
 import { useLogout } from 'utils/hooks/useLogout'
 import Link from 'next/link'
-import { memo, useState } from 'react'
+import { memo } from 'react'
+import { useDisclosure } from '@chakra-ui/react'
 import { usePathname } from 'next/navigation'
 import { useUserDetails } from '@/utils/providers/UserDetailsProvider'
 import { UserDetailsModal } from '@/components/shared/UserDetailsModal'
@@ -20,7 +21,7 @@ import { UserDetailsModal } from '@/components/shared/UserDetailsModal'
 export const Header = memo(function Header() {
   const { userDetails } = useUserDetails()
   const logout = useLogout()
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const pathname = usePathname()
 
   const renderBreadcrumbs = () => {
@@ -64,8 +65,8 @@ export const Header = memo(function Header() {
             </Box>
             <Button
               colorScheme="whiteAlpha"
-              onClick={() => setIsModalOpen(true)}
-            >
+              onClick={onOpen}
+              >
               Edit
             </Button>
             <Button colorScheme="whiteAlpha" onClick={logout}>
@@ -78,8 +79,8 @@ export const Header = memo(function Header() {
         <UserDetailsModal
           username={userDetails.username}
           jobTitle={userDetails.jobTitle}
-          open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          isOpen={isOpen}
+          onClose={onClose}
         />
       )}
     </Box>
