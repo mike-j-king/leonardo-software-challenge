@@ -1,4 +1,3 @@
-'use client'
 import { Suspense } from 'react'
 import { Container } from '@chakra-ui/react'
 import { LoginForm } from '@/components/LoginForm'

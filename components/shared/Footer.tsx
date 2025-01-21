@@ -1,4 +1,3 @@
-'use client'
 import { Box, Container, Text, Link } from '@chakra-ui/react'
 import { memo } from 'react'
 
