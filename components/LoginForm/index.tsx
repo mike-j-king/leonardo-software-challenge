@@ -40,7 +40,7 @@ export function LoginForm() {
   const searchParams = useSearchParams()
   const { updateUserDetails } = useUserDetails()
 
-  async function formAction(prevState: FormState | null, formData: FormData) {
+  async function formAction(_prevState: FormState | null, formData: FormData) {
     const username = formData.get('username') as string
     const jobTitle = formData.get('jobTitle') as string
     
@@ -58,19 +58,19 @@ export function LoginForm() {
     }
   }
 
-  const [state, dispatch] = useFormState(formAction, null)
+  const [formState, dispatchForm] = useFormState(formAction, null)
 
   return (
     <VStack spacing={8}>
       <Heading>Welcome to Rick & Morty&apos;s Multiverse Explorer!</Heading>
       <Box w="100%" p={8} borderRadius="lg" boxShadow="lg" bg="white">
-        {state?.message && (
-          <Alert status={state.success ? 'success' : 'error'} mb={4}>
+        {formState?.message && (
+          <Alert status={formState.success ? 'success' : 'error'} mb={4}>
             <AlertIcon />
-            {state.message}
+            {formState.message}
           </Alert>
         )}
-        <form action={dispatch}>
+        <form action={dispatchForm}>
           <VStack spacing={4}>
             <Text fontSize="md" color="gray.600" mt={2}>
               Enter your details to start exploring characters across dimensions

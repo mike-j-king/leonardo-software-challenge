@@ -1,5 +1,6 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
+import { useFormState, useFormStatus } from 'react-dom'
 import {
   Button,
   Input,
@@ -16,12 +17,34 @@ import {
 } from '@chakra-ui/react'
 import { useUserDetails } from '@/utils/providers/UserDetailsProvider'
 
+interface FormState {
+  message?: string
+  success: boolean
+}
+
+
 interface UserDetailsModalProps {
   open: boolean
   username: string
   jobTitle: string
   onClose: () => void
 }
+
+function SubmitButton() {
+  const { pending } = useFormStatus()
+  
+  return (
+    <Button
+      type="submit"
+      colorScheme="blue"
+      width="full"
+      isLoading={pending}
+    >
+      Continue
+    </Button>
+  )
+}
+
 
 export function UserDetailsModal({
   open,
@@ -31,18 +54,25 @@ export function UserDetailsModal({
 }: UserDetailsModalProps) {
   const { updateUserDetails } = useUserDetails()
 
-  const [userData, setUserData] = useState({
-    username: username,
-    jobTitle: jobTitle,
-  })
-
-  const handleSubmit = (
-    e: React.FormEvent<HTMLFormElement | HTMLButtonElement>
-  ) => {
-    e.preventDefault()
-    updateUserDetails(userData)
-    onClose()
+  async function formAction(_prevState: FormState | null, formData: FormData) {
+    const username = formData.get('username') as string
+    const jobTitle = formData.get('jobTitle') as string
+    
+    if (!username?.trim() || !jobTitle?.trim()) {
+      return { success: false, message: 'All fields are required' }
+    }
+  
+    try {
+      await updateUserDetails({ username, jobTitle })
+      return { success: true, message: 'Login successful' }
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : 'Login failed. Please try again.'
+      return { success: false, message: errorMessage }
+    }
   }
+
+  const [formState, dispatchForm] = useFormState(formAction, null)
+
 
   return (
     <Modal
@@ -59,40 +89,34 @@ export function UserDetailsModal({
             Edit your details
           </Text>
         </ModalHeader>
-        <form onSubmit={handleSubmit}>
+        <form action={dispatchForm}>
           <ModalBody>
             <VStack spacing={4}>
               <FormControl isRequired>
                 <FormLabel>Username</FormLabel>
                 <Input
-                  value={userData.username}
-                  onChange={(e) =>
-                    setUserData({ ...userData, username: e.target.value })
-                  }
+                  name="username"
+                  defaultValue={username}
                   placeholder="Enter your username"
                 />
               </FormControl>
               <FormControl isRequired>
                 <FormLabel>Job Title</FormLabel>
                 <Input
-                  value={userData.jobTitle}
-                  onChange={(e) =>
-                    setUserData({ ...userData, jobTitle: e.target.value })
-                  }
+                  name="jobTitle"
+                  defaultValue={jobTitle}
                   placeholder="Enter your job title"
                 />
               </FormControl>
+              {formState?.message && (
+                <Text color={formState.success ? 'green.500' : 'red.500'}>
+                  {formState.message}
+                </Text>
+              )}
             </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button
-              type="submit"
-              colorScheme="blue"
-              isDisabled={!userData.username || !userData.jobTitle}
-              width="full"
-            >
-              Continue
-            </Button>
+            <SubmitButton />
           </ModalFooter>
         </form>
       </ModalContent>
