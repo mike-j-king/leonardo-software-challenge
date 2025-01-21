@@ -11,10 +11,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  const response = NextResponse.next()
-  response.headers.set('x-user-details', JSON.stringify(userDetails))
-
-  return response
+  return NextResponse.next()
 }
 
 export const config = {

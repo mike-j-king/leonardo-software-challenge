@@ -1,16 +1,11 @@
-import { headers } from 'next/headers'
 import { Providers } from '@/utils/providers'
+import { serverGetUserDetails } from './actions/UserDetails'
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const headersList = headers()
-  const userDetailsHeader = headersList.get('x-user-details')
-  const initialUserDetails = userDetailsHeader
-    ? JSON.parse(userDetailsHeader)
-    : null
-
+  const initialUserDetails = await serverGetUserDetails()
   return (
     <html lang="en">
       <body>
