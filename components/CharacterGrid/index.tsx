@@ -54,7 +54,7 @@ export function CharacterGrid() {
 
   const noData = !loading && !error && data?.characters?.results.length === 0
 
-  // Preload images to avoid them loading during the first render
+  // Pre-download all the images to avoid them flashing in as the browser tries to load the image.src URL when the image is rendered.
   useEffect(() => {
     if (data?.characters?.results) {
       let loadedImages = 0
