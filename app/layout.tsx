@@ -1,7 +1,4 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import { UserDetailsProvider } from 'utils/providers/UserDetailsProvider'
-
-import theme from '@/app/theme'
+import { Providers } from '@/utils/providers'
 
 export default function RootLayout({
   children,
@@ -11,9 +8,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ChakraProvider theme={theme}>
-          <UserDetailsProvider>{children}</UserDetailsProvider>
-        </ChakraProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
