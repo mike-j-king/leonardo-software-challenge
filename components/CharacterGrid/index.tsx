@@ -71,7 +71,12 @@ export function CharacterGrid() {
             }
           }
         }
-        img.src = character.image
+        const params = new URLSearchParams({
+          url: character.image,
+          w: '640',
+          q: '75'
+        })
+        img.src = `/_next/image?${params.toString()}`
       })
 
       // Cleanup function that runs when component unmounts or data changes
