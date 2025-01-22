@@ -19,9 +19,12 @@ export async function serverUpdateUserDetails(data: UserDetails) {
 export async function serverGetUserDetails() {
   const cookieStore = await cookies()
   const userDetailsCookie = cookieStore.get('user-details')
-  return userDetailsCookie ? JSON.parse(userDetailsCookie.value) : null
+  try {
+    return userDetailsCookie ? JSON.parse(userDetailsCookie.value) : null
+  } catch {
+    return null
+  }
 }
-
 export async function serverClearUserDetails() {
   const cookieStore = await cookies()
   cookieStore.delete('user-details')

@@ -4,7 +4,7 @@ import { CharacterGrid } from '@/components/CharacterGrid'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Character Information | Rick and Morty'
+  title: 'Character Information | Rick and Morty',
 }
 
 export default function InformationPage() {

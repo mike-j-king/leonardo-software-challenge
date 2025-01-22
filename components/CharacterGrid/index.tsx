@@ -20,16 +20,14 @@ export function CharacterGrid() {
   const debouncedSearchName = useDebounce(searchName, 300) // 300ms debounce
   const [imagesPreloaded, setImagesPreloaded] = useState(false)
 
-  const [currentPage, setCurrentPage] = useState(
-    Number(searchParams.get('page')) || 1
-  )
+  const currentPage = Number(searchParams.get('page')) || 1
+
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(
     null
   )
 
   const handlePageChange = useCallback(
     (page: number) => {
-      setCurrentPage(page)
       router.push(
         `/information?page=${page}` +
           (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
@@ -43,12 +41,10 @@ export function CharacterGrid() {
     if (debouncedSearchName == currentSearchName) {
       return
     }
-    setCurrentPage(1)
     router.push(
       `/information?page=1` +
         (debouncedSearchName ? `&name=${debouncedSearchName}` : '')
     )
-    
   }, [currentSearchName, debouncedSearchName, router])
 
   const { loading, error, data, refetch, totalPages } = useCharacters(
@@ -58,22 +54,36 @@ export function CharacterGrid() {
 
   const noData = !loading && !error && data?.characters?.results.length === 0
 
-  // Preload images to avoid them loading during the first render
+  // Pre-download all the images to avoid them flashing in as the browser tries to load the image.src URL when the image is rendered.
   useEffect(() => {
     if (data?.characters?.results) {
       let loadedImages = 0
       const totalImages = data.characters.results.length
-      
-      data.characters.results.forEach(character => {
+      let mounted = true
+
+      data.characters.results.forEach((character) => {
         const img = new Image()
         img.onload = () => {
-          loadedImages++
-          if (loadedImages === totalImages) {
-            setImagesPreloaded(true)
+          if (mounted) {
+            loadedImages++
+            if (loadedImages === totalImages) {
+              setImagesPreloaded(true)
+            }
           }
         }
-        img.src = character.image
+        const params = new URLSearchParams({
+          url: character.image,
+          w: '640',
+          q: '75'
+        })
+        img.src = `/_next/image?${params.toString()}`
       })
+
+      // Cleanup function that runs when component unmounts or data changes
+      return () => {
+        mounted = false
+        setImagesPreloaded(false)
+      }
     }
   }, [data])
 

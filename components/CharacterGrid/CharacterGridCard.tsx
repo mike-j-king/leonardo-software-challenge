@@ -14,7 +14,6 @@ export function CharacterGridCard({
   cardIndex,
   setSelectedCharacter,
 }: CharacterGridCardProps) {
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       // Prevent modal from closing in hitting enter
@@ -46,8 +45,6 @@ export function CharacterGridCard({
     </MotionBox>
   )
 }
-
-
 
 export const createCardAnimation = (cardIndex: number) => ({
   initial: { opacity: 0, y: 20 },

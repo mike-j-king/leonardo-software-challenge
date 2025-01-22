@@ -19,10 +19,14 @@ const UserDetailsContext = createContext<UserDetailsContextType | undefined>(
 
 export function UserDetailsProvider({
   children,
+  initialUserDetails,
 }: {
   children: React.ReactNode
+  initialUserDetails: UserDetails | null
 }) {
-  const [userDetails, setUserDetails] = useState<UserDetails | null>(null)
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(
+    initialUserDetails
+  )
 
   useEffect(() => {
     serverGetUserDetails().then(setUserDetails)

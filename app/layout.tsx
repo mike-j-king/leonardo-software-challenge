@@ -1,19 +1,17 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import { UserDetailsProvider } from 'utils/providers/UserDetailsProvider'
-
-import theme from '@/app/theme'
-
-export default function RootLayout({
+import { Providers } from '@/utils/providers'
+import { serverGetUserDetails } from './actions/UserDetails'
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const initialUserDetails = await serverGetUserDetails()
   return (
     <html lang="en">
       <body>
-        <ChakraProvider theme={theme}>
-          <UserDetailsProvider>{children}</UserDetailsProvider>
-        </ChakraProvider>
+        <Providers initialUserDetails={initialUserDetails}>
+          {children}
+        </Providers>
       </body>
     </html>
   )

@@ -50,7 +50,6 @@ export function PaginationControls({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) {
-
   const siblingCount = useBreakpointValue({ base: 0, md: 1 }) || 0
   const buttonSize = useBreakpointValue({ base: 'xs', md: 'sm' })
   const spacing = useBreakpointValue({ base: 1, md: 2 })
@@ -83,11 +82,7 @@ export function PaginationControls({
   )
 
   // Pages will be an array of numbers and '...' strings e.g. [1,2,3,4,'...',10]
-  const pages = generatePaginationRange(
-    currentPage,
-    totalPages,
-    siblingCount
-  )
+  const pages = generatePaginationRange(currentPage, totalPages, siblingCount)
 
   return (
     <HStack spacing={spacing}>
